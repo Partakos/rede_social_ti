@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+
+{% block title %}{{ perfil.nome_completo }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <img src="{{ perfil.foto.url }}" alt="{{ perfil.nome_completo }}" 
+                     class="rounded-circle mb-3" width="150" height="150">
+                <h3>{{ perfil.nome_completo }}</h3>
+                <p class="text-muted">{{ perfil.biografia }}</p>
+                
+                {% if user.is_authenticated and user.perfil != perfil %}
+                    {% if amizade_status == 'pendente' %}
+                        <button class="btn btn-secondary" disabled>Solicitação pendente</button>
+                    {% elif amizade_status == 'aceito' %}
+                        <button class="btn btn-success" disabled>Amigos</button>
+                    {% else %}
+                        <a href="{% url 'solicitar_amizade' perfil.id %}" class="btn btn-primary">Adicionar amigo</a>
+                    {% endif %}
+                {% endif %}
+                
+                {% if user.perfil == perfil %}
+                    <a href="{% url 'editar_perfil' %}" class="btn btn-outline-primary">Editar perfil</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        {% for publicacao in publicacoes %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <p>{{ publicacao.conteudo }}</p>
+                {% if publicacao.imagem %}
+                <img src="{{ publicacao.imagem.url }}" class="img-fluid rounded mb-2">
+                {% endif %}
+                <small class="text-muted">{{ publicacao.data_publicacao|naturaltime }}</small>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">Nenhuma publicação ainda.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

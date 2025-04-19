@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="post" action="{% url 'criar_publicacao' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <textarea name="conteudo" class="form-control" placeholder="O que você está pensando?" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <input type="file" name="imagem" class="form-control" accept="image/*">
+                    <small class="text-muted">Você pode adicionar uma imagem</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Publicar</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for publicacao in publicacoes %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <img src="{{ publicacao.autor.foto.url }}" alt="{{ publicacao.autor.nome_completo }}" 
+                     class="rounded-circle me-2" width="40" height="40">
+                <div>
+                    <h5 class="mb-0">{{ publicacao.autor.nome_completo }}</h5>
+                    <small class="text-muted">{{ publicacao.data_publicacao|naturaltime }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ publicacao.conteudo }}</p>
+            {% if publicacao.imagem %}
+            <img src="{{ publicacao.imagem.url }}" class="img-fluid rounded mb-2" alt="Imagem da publicação">
+            {% endif %}
+            {% if publicacao.video %}
+            <video controls class="w-100">
+                <source src="{{ publicacao.video.url }}" type="video/mp4">
+                Seu navegador não suporta o elemento de vídeo.
+            </video>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">Nenhuma publicação encontrada.</div>
+    {% endfor %}
+{% endblock %}
