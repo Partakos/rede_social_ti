@@ -6,7 +6,7 @@ class Perfil(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     nome_completo = models.CharField(max_length=100)
     email = models.EmailField()
-    foto = models.ImageField(upload_to='perfis/', blank=True, null=True)
+    foto = models.ImageField(upload_to='perfis/', blank=True, null=True, default=None)
     data_nascimento = models.DateField(blank=True, null=True)
     biografia = models.TextField(blank=True)
     

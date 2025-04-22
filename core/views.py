@@ -10,15 +10,16 @@ def inicio(request):
     if request.user.is_authenticated:
         try:
             perfil = request.user.perfil
-            publicacoes = Publicacao.objects.filter(
-                autor__in=[amizade.destinatario for amizade in 
-                          Amizade.objects.filter(remetente=perfil, status='aceito')] +
-                         [amizade.remetente for amizade in 
-                          Amizade.objects.filter(destinatario=perfil, status='aceito')] +
-                         [perfil]
-            ).order_by('-data_publicacao')
-        except:
+        except Perfil.DoesNotExist:
             return redirect('editar_perfil')
+            
+        publicacoes = Publicacao.objects.filter(
+            autor__in=[amizade.destinatario for amizade in 
+                      Amizade.objects.filter(remetente=perfil, status='aceito')] +
+                     [amizade.remetente for amizade in 
+                      Amizade.objects.filter(destinatario=perfil, status='aceito')] +
+                     [perfil]
+        ).order_by('-data_publicacao')
     else:
         publicacoes = Publicacao.objects.all().order_by('-data_publicacao')[:10]
     

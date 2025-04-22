@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load humanize %}
+{% load static %}
 
 {% block title %}{{ perfil.nome_completo }}{% endblock %}
 
@@ -8,8 +9,13 @@
     <div class="col-md-4">
         <div class="card mb-4">
             <div class="card-body text-center">
-                <img src="{{ perfil.foto.url }}" alt="{{ perfil.nome_completo }}" 
-                     class="rounded-circle mb-3" width="150" height="150">
+                {% if perfil.foto %}
+                    <img src="{{ perfil.foto.url }}" alt="{{ perfil.nome_completo }}" 
+                         class="rounded-circle mb-3" width="150" height="150">
+                {% else %}
+                    <img src="{% static 'img/default-profile.png' %}" alt="Foto padrão"
+                         class="rounded-circle mb-3" width="150" height="150">
+                {% endif %}
                 <h3>{{ perfil.nome_completo }}</h3>
                 <p class="text-muted">{{ perfil.biografia }}</p>
                 
