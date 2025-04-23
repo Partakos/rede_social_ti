@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Criar Publicação{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Criar Nova Publicação</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="conteudo" class="form-label">Conteúdo</label>
+                        <textarea name="conteudo" id="conteudo" class="form-control" rows="4" 
+                                  placeholder="O que você está pensando?"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="imagem" class="form-label">Imagem (opcional)</label>
+                        <input type="file" name="imagem" id="imagem" class="form-control" accept="image/*">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="video" class="form-label">Vídeo (opcional)</label>
+                        <input type="file" name="video" id="video" class="form-control" accept="video/*">
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Publicar</button>
+                        <a href="{% url 'inicio' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

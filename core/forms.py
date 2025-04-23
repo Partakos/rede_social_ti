@@ -15,5 +15,8 @@ class PublicacaoForm(forms.ModelForm):
         model = Publicacao
         fields = ['conteudo', 'imagem', 'video']
         widgets = {
-            'conteudo': forms.Textarea(attrs={'rows': 3, 'placeholder': 'O que você está pensando?'}),
+            'conteudo': forms.Textarea(attrs={
+                'rows': 4,
+                'placeholder': 'O que você está pensando?'
+            }),
         }
