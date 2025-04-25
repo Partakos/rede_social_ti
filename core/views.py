@@ -121,6 +121,19 @@ def criar_publicacao(request):
     
     return render(request, 'core/criar_publicacao.html', {'form': form})
 
+@login_required
+def deletar_publicacao(request, publicacao_id):
+    publicacao = get_object_or_404(Publicacao, id=publicacao_id)
+    
+    # Verifica se o usuário atual é o autor da publicação
+    if request.user.perfil == publicacao.autor:
+        publicacao.delete()
+        messages.success(request, 'Publicação excluída com sucesso!')
+    else:
+        messages.error(request, 'Você não tem permissão para excluir esta publicação.')
+    
+    return redirect('inicio')
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']

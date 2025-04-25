@@ -15,4 +15,5 @@ urlpatterns = [
     path('amigos/solicitar/<int:perfil_id>/', views.solicitar_amizade, name='solicitar_amizade'),
     path('amigos/aceitar/<int:solicitacao_id>/', views.aceitar_amizade, name='aceitar_amizade'),
     path('publicar/', views.criar_publicacao, name='criar_publicacao'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)
+    path('publicacao/deletar/<int:publicacao_id>/', views.deletar_publicacao, name='deletar_publicacao'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)    

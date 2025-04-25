@@ -25,7 +25,7 @@
 
     {% for publicacao in publicacoes %}
     <div class="card mb-4">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 {% if publicacao.autor.foto %}
                     <img src="{{ publicacao.autor.foto.url }}" alt="{{ publicacao.autor.nome_completo }}" 
@@ -39,6 +39,15 @@
                     <small class="text-muted">{{ publicacao.data_publicacao|naturaltime }}</small>
                 </div>
             </div>
+            {% if user.is_authenticated and user.perfil == publicacao.autor %}
+            <form method="post" action="{% url 'deletar_publicacao' publicacao.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm" 
+                        onclick="return confirm('Tem certeza que deseja excluir esta publicação?')">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+            {% endif %}
         </div>
         <div class="card-body">
             <p class="card-text">{{ publicacao.conteudo }}</p>

@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -25,6 +26,15 @@ class Publicacao(models.Model):
     
     def __str__(self):
         return f"Publicação de {self.autor.nome_completo}"
+    
+    def delete(self, *args, **kwargs):
+        if self.imagem:
+            if os.path.isfile(self.imagem.path):
+                os.remove(self.imagem.path)
+        if self.video:
+            if os.path.isfile(self.video.path):
+                os.remove(self.video.path)
+        super().delete(*args, **kwargs)
 
 class Amizade(models.Model):
     remetente = models.ForeignKey(Perfil, related_name='remetente', on_delete=models.CASCADE)
